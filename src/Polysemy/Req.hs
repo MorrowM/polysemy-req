@@ -41,6 +41,7 @@ import qualified Network.HTTP.Req as R
 import Polysemy
 
 -- | An effect for making http 'Network.HTTP.Req.req'uests.
+-- @since 0.1.0
 data Req m response where
   Req ::
     ( HttpMethod method,
@@ -62,13 +63,16 @@ data Req m response where
     Req m response
 
 -- | See 'Network.HTTP.Req.req'.
+-- @since 0.1.0
 makeSem ''Req
 
 -- | Run a 'Req' effect with the 'Network.HTTP.Req.defaultHttpConfig'.
+-- @since 0.1.0
 interpretReq :: Member (Embed IO) r => InterpreterFor Req r
 interpretReq = interpretReqWith defaultHttpConfig
 
 -- | Run a 'Req' effect with a custom 'Network.HTTP.Req.HttpConfig'.
+-- @since 0.1.0
 interpretReqWith :: Member (Embed IO) r => HttpConfig -> InterpreterFor Req r
 interpretReqWith cfg = interpret $ \case
   Req m u b p o -> embed @IO $ R.runReq cfg $ R.req @R.Req m u b p o
